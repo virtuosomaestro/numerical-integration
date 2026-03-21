@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,6 +21,8 @@ namespace numerical_integration
         double ans = 0, err = 0, a, b, step;
         const double pi = Math.PI;
         GraphPane pane;
+        List<double> exact_values = new List<double> {4.0, Math.Asin(0.99), 2.0 - Math.Sqrt(3.0)};
+
 
         public Form1()
         {
@@ -28,6 +32,7 @@ namespace numerical_integration
             pane.Title.FontSpec.Size = 16;
             pane.XAxis.Title.Text = "Ось X";
             pane.YAxis.Title.Text = "Ось Y";
+
             zedGraphControl.GraphPane.XAxis.MajorGrid.IsVisible = true;
             zedGraphControl.GraphPane.YAxis.MajorGrid.IsVisible = true;
             zedGraphControl.AxisChange();
@@ -162,11 +167,12 @@ namespace numerical_integration
         {
             return 2.0/((r-l)*(r-l))*((x-r)*(x-(l+r)/2.0)*f(l) - 2.0*(x-l)*(x-r)*f((l+r)/2.0) + (x-l)*(x-(l+r)/2.0)*f(r));
         }
-        private void draw_interpolant()
+        private void draw_simpson()
         {
             PointPairList list = new PointPairList();
             double N = 10000*(b-a);
             double stp = (b - a) / (N - 1), x = a;
+            list.Add(nodes[0].X, 0);
             for (int i = 0; i < num_of_nodes - 1; i++)
             {
                 while (x <= nodes[i + 1].X)
@@ -176,13 +182,15 @@ namespace numerical_integration
                 }
                 list.Add(nodes[i+1].X, L(nodes[i+1].X, nodes[i].X, nodes[i+1].X));
             }
-            LineItem myCurve = pane.AddCurve("Интерполянт", list, Color.LightBlue, SymbolType.None);
-            myCurve.Line.Width = 3.0F;
+            list.Add(nodes[num_of_nodes-1].X, 0);
+            list.Add(nodes[0].X, 0);
+            LineItem polygon = pane.AddCurve("", list, Color.Black, SymbolType.None);
+            polygon.Line.Fill = new Fill(Color.LightBlue);
+            polygon.Line.Width = 3.0F;
         }
         private void calc()
         {
             ans = 0;
-            err = 0;
             if (ind_of_method == 0){
                 for(int i = 0; i < num_of_nodes-1; i++)
                 {
@@ -217,6 +225,10 @@ namespace numerical_integration
                     ans += step * (nodes[i].Y + 4.0 * f((nodes[i].X + nodes[i + 1].X) / 2.0) + nodes[i+1].Y) / 6.0;
                 }
             }
+            if (ind_of_problem <= 2)
+            {
+                err = Math.Abs(ans - exact_values[ind_of_problem]);
+            }
         }
         private void draw()
         {
@@ -224,12 +236,26 @@ namespace numerical_integration
             zedGraphControl.AxisChange();
             zedGraphControl.Invalidate();
             draw_nodes();
-            if (ind_of_method == 4) draw_interpolant();
             draw_function();
             if (ind_of_method == 3) draw_trapezoids();
             else if(ind_of_method <= 2) draw_rectangles();
+            else draw_simpson();
             zedGraphControl.AxisChange();
             zedGraphControl.Invalidate();
+        }
+        private void display_values()
+        {
+            integral.Text = "Приближённое значение: " + ans.ToString("F5");
+            if(ind_of_problem <= 2)
+            {
+                exact.Text = "Точное значение: " + exact_values[ind_of_problem].ToString("F5");
+                error.Text = "Пошрешность: " + err.ToString("F5");
+            }
+            else
+            {
+                exact.Text = "";
+                error.Text = "";
+            }
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -239,9 +265,46 @@ namespace numerical_integration
             init_nodes();
             calc();
             draw();
-            integral.Text = "Площадь под графиком: " + ans.ToString("F5");
-            error.Text = "Пошрешность: " + err.ToString("F5");
+            display_values();
+            calc_table();
         }
+        private void calc_table()
+        {
+            grid.Rows.Clear();
+            grid.Columns.Clear();
+            if (ind_of_problem > 2) return;
+            grid.Columns.Add("-1", "Таблица погрешностей");
+            grid.Columns.Add("0", "");
+            grid.Columns.Add("1", "");
+            grid.Columns.Add("2", "");
+            grid.Columns.Add("3", "Количество узлов");
+            grid.Columns.Add("4", "");
+            grid.Columns.Add("5", "");
+            grid.Columns.Add("6", "");
+            grid.Rows.Add("", "", "5", "9", "17", "33", "65", "129");
+            grid.Rows.Add("", "Прямоугольники (слева)", "", "", "", "", "", "");
+            grid.Rows.Add("", "Прямоугольники (справа)", "", "", "", "", "", "");
+            grid.Rows.Add("Метод", "Прямоугольники (посередине)", "", "", "", "", "", "");
+            grid.Rows.Add("", "Трапеции", "", "", "", "", "", "");
+            grid.Rows.Add("", "Симпсон", "", "", "", "", "", "");
+            
+            grid.Columns["0"].Width = 220;
 
+            for (int column = 2; column <= 7; column++)
+            {
+                for (int raw = 1; raw <= 5; raw++)
+                {
+                    num_of_nodes = Convert.ToInt32(Math.Pow(2, column)) + 1;
+                    ind_of_method = raw - 1;
+                    init_nodes();
+                    calc();
+                    grid[column, raw].Value = err.ToString("F5");
+                }
+            }
+
+            num_of_nodes = Convert.ToInt32(number_of_nodes.Text);
+            ind_of_method = method.SelectedIndex;
+            init_nodes();
+        }
     }
 }

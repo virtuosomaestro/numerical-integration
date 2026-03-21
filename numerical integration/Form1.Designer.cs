@@ -39,6 +39,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.integral = new System.Windows.Forms.Label();
             this.error = new System.Windows.Forms.Label();
+            this.exact = new System.Windows.Forms.Label();
+            this.grid = new System.Windows.Forms.DataGridView();
+            ((System.ComponentModel.ISupportInitialize)(this.grid)).BeginInit();
             this.SuspendLayout();
             // 
             // zedGraphControl
@@ -52,38 +55,44 @@
             this.zedGraphControl.ScrollMinX = 0D;
             this.zedGraphControl.ScrollMinY = 0D;
             this.zedGraphControl.ScrollMinY2 = 0D;
-            this.zedGraphControl.Size = new System.Drawing.Size(1064, 562);
+            this.zedGraphControl.Size = new System.Drawing.Size(1524, 562);
             this.zedGraphControl.TabIndex = 0;
             // 
             // problem
             // 
             this.problem.AccessibleDescription = "";
-            this.problem.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.problem.AutoCompleteCustomSource.AddRange(new string[] {
+            "1",
+            "6",
+            "8",
+            "18",
+            "21"});
+            this.problem.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.25F);
             this.problem.FormattingEnabled = true;
             this.problem.Items.AddRange(new object[] {
             "1",
-            "2",
-            "3",
-            "4",
-            "5"});
-            this.problem.Location = new System.Drawing.Point(26, 60);
+            "6",
+            "8",
+            "18",
+            "21"});
+            this.problem.Location = new System.Drawing.Point(26, 46);
             this.problem.Name = "problem";
-            this.problem.Size = new System.Drawing.Size(309, 39);
+            this.problem.Size = new System.Drawing.Size(309, 33);
             this.problem.TabIndex = 1;
             // 
             // method
             // 
-            this.method.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.method.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.25F);
             this.method.FormattingEnabled = true;
             this.method.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5"});
-            this.method.Location = new System.Drawing.Point(26, 220);
+            "Прямоугольники (слева)",
+            "Прямоугольники (справа)",
+            "Прямоугольники (посередине)",
+            "Трапеции",
+            "Симпсон"});
+            this.method.Location = new System.Drawing.Point(26, 228);
             this.method.Name = "method";
-            this.method.Size = new System.Drawing.Size(309, 39);
+            this.method.Size = new System.Drawing.Size(309, 33);
             this.method.TabIndex = 2;
             // 
             // Start
@@ -99,10 +108,10 @@
             // 
             // number_of_nodes
             // 
-            this.number_of_nodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.number_of_nodes.Location = new System.Drawing.Point(26, 368);
+            this.number_of_nodes.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.25F);
+            this.number_of_nodes.Location = new System.Drawing.Point(26, 411);
             this.number_of_nodes.Name = "number_of_nodes";
-            this.number_of_nodes.Size = new System.Drawing.Size(309, 38);
+            this.number_of_nodes.Size = new System.Drawing.Size(309, 31);
             this.number_of_nodes.TabIndex = 4;
             this.number_of_nodes.Tag = "";
             // 
@@ -110,7 +119,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.label1.Location = new System.Drawing.Point(20, 316);
+            this.label1.Location = new System.Drawing.Point(20, 377);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(251, 31);
             this.label1.TabIndex = 5;
@@ -120,7 +129,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.label2.Location = new System.Drawing.Point(20, 176);
+            this.label2.Location = new System.Drawing.Point(20, 194);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(102, 31);
             this.label2.TabIndex = 6;
@@ -130,7 +139,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.label3.Location = new System.Drawing.Point(20, 26);
+            this.label3.Location = new System.Drawing.Point(20, 12);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(114, 31);
             this.label3.TabIndex = 7;
@@ -140,25 +149,45 @@
             // 
             this.integral.AutoSize = true;
             this.integral.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.integral.Location = new System.Drawing.Point(20, 602);
+            this.integral.Location = new System.Drawing.Point(20, 587);
             this.integral.Name = "integral";
-            this.integral.Size = new System.Drawing.Size(0, 31);
+            this.integral.Size = new System.Drawing.Size(336, 31);
             this.integral.TabIndex = 8;
+            this.integral.Text = "Приближённое значение:";
             // 
             // error
             // 
             this.error.AutoSize = true;
             this.error.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.error.Location = new System.Drawing.Point(20, 656);
+            this.error.Location = new System.Drawing.Point(20, 669);
             this.error.Name = "error";
             this.error.Size = new System.Drawing.Size(0, 31);
             this.error.TabIndex = 9;
+            // 
+            // exact
+            // 
+            this.exact.AutoSize = true;
+            this.exact.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.exact.Location = new System.Drawing.Point(20, 629);
+            this.exact.Name = "exact";
+            this.exact.Size = new System.Drawing.Size(0, 31);
+            this.exact.TabIndex = 10;
+            // 
+            // grid
+            // 
+            this.grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grid.Location = new System.Drawing.Point(26, 715);
+            this.grid.Name = "grid";
+            this.grid.Size = new System.Drawing.Size(1870, 324);
+            this.grid.TabIndex = 11;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1457, 709);
+            this.ClientSize = new System.Drawing.Size(1924, 1061);
+            this.Controls.Add(this.grid);
+            this.Controls.Add(this.exact);
             this.Controls.Add(this.error);
             this.Controls.Add(this.integral);
             this.Controls.Add(this.label3);
@@ -171,6 +200,7 @@
             this.Controls.Add(this.zedGraphControl);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.grid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -188,6 +218,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label integral;
         private System.Windows.Forms.Label error;
+        private System.Windows.Forms.Label exact;
+        private System.Windows.Forms.DataGridView grid;
     }
 }
 
