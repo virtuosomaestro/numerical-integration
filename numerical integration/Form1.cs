@@ -50,7 +50,7 @@ namespace numerical_integration
                 case 2:
                     return x/Math.Sqrt(4-x*x);
                 case 3:
-                    double a = 50;
+                    double a = 67;
                     return (a / x) * (a / x) * Math.Sin(a / x);
                 case 4:
                     return Math.Exp(-x * x);
@@ -233,8 +233,6 @@ namespace numerical_integration
         private void draw()
         {
             pane.CurveList.Clear();
-            zedGraphControl.AxisChange();
-            zedGraphControl.Invalidate();
             draw_nodes();
             draw_function();
             if (ind_of_method == 3) draw_trapezoids();
@@ -272,8 +270,14 @@ namespace numerical_integration
         {
             grid.Rows.Clear();
             grid.Columns.Clear();
-            if (ind_of_problem > 2) return;
-            grid.Columns.Add("-1", "Таблица погрешностей");
+
+            grid.DefaultCellStyle.Font = new Font("Microsoft Sans Serif", 15);
+
+            if (ind_of_problem > 2)
+                grid.Columns.Add("-1", "Таблица приближенных значений для F" + problem.Text);
+            else
+                grid.Columns.Add("-1", "Таблица погрешностей для F" + problem.Text);
+
             grid.Columns.Add("0", "");
             grid.Columns.Add("1", "");
             grid.Columns.Add("2", "");
@@ -285,10 +289,24 @@ namespace numerical_integration
             grid.Rows.Add("", "Прямоугольники (слева)", "", "", "", "", "", "");
             grid.Rows.Add("", "Прямоугольники (справа)", "", "", "", "", "", "");
             grid.Rows.Add("Метод", "Прямоугольники (посередине)", "", "", "", "", "", "");
+            grid.Rows[3].Cells[0].Style.Font = new Font("Microsoft Sans Serif", 15, FontStyle.Bold);
             grid.Rows.Add("", "Трапеции", "", "", "", "", "", "");
             grid.Rows.Add("", "Симпсон", "", "", "", "", "", "");
-            
-            grid.Columns["0"].Width = 220;
+            grid.Columns["-1"].Width = 230;
+            grid.Columns["0"].Width = 300;
+            grid.Columns["1"].Width = 215;
+            grid.Columns["2"].Width = 215;
+            grid.Columns["3"].Width = 215;
+            grid.Columns["4"].Width = 215;
+            grid.Columns["5"].Width = 215;
+            grid.Columns["6"].Width = 215;
+
+            grid.Rows[0].Height = 30;
+            grid.Rows[1].Height = 30;
+            grid.Rows[2].Height = 30;
+            grid.Rows[3].Height = 30;
+            grid.Rows[4].Height = 30;
+            grid.Rows[5].Height = 30;
 
             for (int column = 2; column <= 7; column++)
             {
@@ -298,7 +316,10 @@ namespace numerical_integration
                     ind_of_method = raw - 1;
                     init_nodes();
                     calc();
-                    grid[column, raw].Value = err.ToString("F5");
+                    if (ind_of_problem > 2)
+                        grid[column, raw].Value = ans.ToString("F5");
+                    else
+                        grid[column, raw].Value = err.ToString("F5");
                 }
             }
 

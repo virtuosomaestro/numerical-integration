@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.zedGraphControl = new ZedGraph.ZedGraphControl();
             this.problem = new System.Windows.Forms.ComboBox();
             this.method = new System.Windows.Forms.ComboBox();
@@ -55,7 +56,7 @@
             this.zedGraphControl.ScrollMinX = 0D;
             this.zedGraphControl.ScrollMinY = 0D;
             this.zedGraphControl.ScrollMinY2 = 0D;
-            this.zedGraphControl.Size = new System.Drawing.Size(1524, 562);
+            this.zedGraphControl.Size = new System.Drawing.Size(1540, 562);
             this.zedGraphControl.TabIndex = 0;
             // 
             // problem
@@ -153,7 +154,7 @@
             this.integral.Name = "integral";
             this.integral.Size = new System.Drawing.Size(336, 31);
             this.integral.TabIndex = 8;
-            this.integral.Text = "Приближённое значение:";
+            this.integral.Text = "Приближенное значение:";
             // 
             // error
             // 
@@ -175,10 +176,21 @@
             // 
             // grid
             // 
+            this.grid.AllowUserToAddRows = false;
+            this.grid.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.grid.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grid.Location = new System.Drawing.Point(26, 715);
+            this.grid.Location = new System.Drawing.Point(26, 708);
             this.grid.Name = "grid";
-            this.grid.Size = new System.Drawing.Size(1870, 324);
+            this.grid.ReadOnly = true;
+            this.grid.Size = new System.Drawing.Size(1886, 294);
             this.grid.TabIndex = 11;
             // 
             // Form1
