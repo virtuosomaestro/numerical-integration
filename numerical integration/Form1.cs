@@ -46,9 +46,9 @@ namespace numerical_integration
                 case 0:
                     return x * x * x;
                 case 1:
-                    return x / Math.Sqrt(1 - x * x);
+                    return 1 / Math.Sqrt(1 - x * x);
                 case 2:
-                    return x/Math.Sqrt(4-x*x);
+                    return x / Math.Sqrt(4 - x*x);
                 case 3:
                     double a = 67;
                     return (a / x) * (a / x) * Math.Sin(a / x);
