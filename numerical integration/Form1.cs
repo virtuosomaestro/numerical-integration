@@ -232,6 +232,7 @@ namespace numerical_integration
         }
         private void draw()
         {
+
             pane.CurveList.Clear();
             draw_nodes();
             draw_function();
